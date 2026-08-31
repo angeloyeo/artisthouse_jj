@@ -1,0 +1,362 @@
+:root {
+  --brand-cream: #e7dad1;
+  --brand-cream-light: #f7f1ed;
+  --brand-cream-soft: #fbf8f5;
+  --brand-brown: #3c2c1f;
+  --brand-brown-2: #6f5846;
+  --brand-copper: #b77a45;
+  --brand-olive: #68745b;
+  --brand-blue: #447487;
+  --ink: #241a14;
+  --muted: #776a60;
+  --line: #cdbdaf;
+  --line-dark: #8e7867;
+  --paper: #fffdfb;
+  --panel: #f5efea;
+  --shadow: 0 14px 36px rgba(60, 44, 31, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(231, 218, 209, 0.65), rgba(247, 241, 237, 0.75)),
+    #eee8e2;
+  font-family: "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+}
+
+.app-shell {
+  min-height: 100vh;
+  padding: 32px 20px;
+}
+
+.launcher {
+  width: min(482px, 100%);
+  margin: 0 auto 28px;
+  padding: 14px 8px 18px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.launcher__header {
+  display: grid;
+  grid-template-columns: 1fr 96px;
+  align-items: center;
+}
+
+.launcher__title {
+  min-height: 82px;
+  display: grid;
+  align-content: center;
+  text-align: center;
+}
+
+.launcher h1 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 700;
+  color: var(--brand-brown);
+}
+
+.launcher__title p {
+  margin: 4px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brand-brown-2);
+}
+
+.launcher__logo {
+  width: 96px;
+  height: 82px;
+  object-fit: contain;
+}
+
+.launcher h2 {
+  margin: 12px 18px 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--brand-brown);
+}
+
+.launcher p,
+.launcher a {
+  margin-left: 18px;
+  margin-right: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.launcher a {
+  display: inline-block;
+  margin-top: 4px;
+  color: var(--brand-blue);
+  text-underline-offset: 3px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin: 20px 18px 8px;
+}
+
+button {
+  min-width: 100px;
+  height: 30px;
+  padding: 0 14px;
+  border: 1px solid var(--line-dark);
+  border-radius: 4px;
+  background: var(--brand-brown);
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  background: #2f2118;
+}
+
+button:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.status {
+  min-height: 18px;
+  color: var(--muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.report-page {
+  width: 1122px;
+  min-height: 793px;
+  margin: 0 auto;
+  padding: 26px 30px 28px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.report-title {
+  position: relative;
+  display: grid;
+  grid-template-columns: 172px 1fr 130px;
+  align-items: center;
+  min-height: 74px;
+  padding: 0 18px;
+  background: var(--brand-cream);
+  border: 1px solid var(--line);
+  border-left: 8px solid var(--brand-brown);
+}
+
+.report-logo {
+  width: 154px;
+  height: 48px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.report-title h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--brand-brown);
+  letter-spacing: 0;
+}
+
+.report-title::after {
+  content: "Monthly Report";
+  justify-self: end;
+  color: var(--brand-brown-2);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.report-summary {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.student-facts,
+.evaluation-panel,
+.chart-panel {
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.student-facts {
+  display: grid;
+  gap: 0;
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  min-height: 44px;
+  border-bottom: 1px solid var(--line);
+}
+
+.fact:last-child {
+  border-bottom: 0;
+}
+
+.fact.two-col {
+  grid-template-columns: 112px 1fr 70px 78px;
+}
+
+.label,
+.value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.label {
+  background: var(--brand-cream-light);
+  color: var(--brand-brown);
+  border-right: 1px solid var(--line);
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.fact.two-col .value + .label {
+  border-left: 1px solid var(--line);
+}
+
+.value {
+  background: #fff;
+  color: var(--ink);
+  text-align: center;
+}
+
+.fact.tall {
+  min-height: 72px;
+}
+
+.evaluation-panel {
+  display: grid;
+  grid-template-rows: 44px 1fr;
+  min-height: 248px;
+}
+
+.evaluation-title {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: var(--brand-brown);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.evaluation {
+  padding: 14px 18px;
+  white-space: pre-wrap;
+  line-height: 1.55;
+  font-size: 13px;
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.standard-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  color: var(--brand-brown);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.standard-title::before {
+  content: "";
+  width: 34px;
+  height: 3px;
+  background: var(--brand-copper);
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: 260px 260px 1fr;
+  gap: 16px;
+  align-items: stretch;
+  margin-top: 10px;
+}
+
+.chart-panel {
+  min-height: 258px;
+  padding: 12px 12px 10px;
+  background: linear-gradient(180deg, #fff, var(--brand-cream-soft));
+}
+
+.chart-panel--wide {
+  padding-right: 10px;
+}
+
+.chart-row canvas {
+  width: 100%;
+  height: 230px;
+  display: block;
+}
+
+#monthlyChart {
+  height: 230px;
+}
+
+@media (max-width: 1180px) {
+  .report-page {
+    transform: scale(calc((100vw - 40px) / 1122));
+    transform-origin: top center;
+    margin-bottom: calc(-793px + (793px * ((100vw - 40px) / 1122)));
+  }
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .launcher {
+    display: none;
+  }
+
+  .app-shell {
+    padding: 0;
+  }
+
+  .report-page {
+    width: 281mm;
+    min-height: 194mm;
+    margin: 0;
+    padding: 6mm 7mm;
+    border: 0;
+    box-shadow: none;
+    transform: none;
+  }
+}
