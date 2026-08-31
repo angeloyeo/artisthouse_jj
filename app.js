@@ -52,8 +52,10 @@ async function handleFileSelection(event) {
     renderReport(normalizedRows);
     printButton.disabled = false;
 
+    const first = normalizedRows[0];
     const last = normalizedRows.at(-1);
-    setStatus(`${last["이름"] || "학생"} ${last["리포트시점"].getFullYear()}년 ${last["리포트시점"].getMonth() + 1}월 리포트를 생성했습니다.`);
+    const studentName = valueWithFallback(last["이름"], first["이름"]) || "학생";
+    setStatus(`${studentName} ${last["리포트시점"].getFullYear()}년 ${last["리포트시점"].getMonth() + 1}월 리포트를 생성했습니다.`);
   } catch (error) {
     reportPage.hidden = true;
     printButton.disabled = true;
@@ -136,13 +138,24 @@ function toNumber(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function hasValue(value) {
+  return typeof value === "number" ? Number.isFinite(value) && value > 0 : String(value ?? "").trim() !== "";
+}
+
+function valueWithFallback(value, fallback) {
+  return hasValue(value) ? value : fallback;
+}
+
 function renderReport(rows) {
   const first = rows[0];
   const last = rows.at(-1);
+  const studentName = valueWithFallback(last["이름"], first["이름"]);
+  const schoolName = valueWithFallback(last["학교"], first["학교"]);
+  const grade = valueWithFallback(last["학년"], first["학년"]);
 
-  document.getElementById("studentName").textContent = last["이름"] || "";
-  document.getElementById("schoolName").textContent = last["학교"] || "";
-  document.getElementById("grade").textContent = formatGrade(last["학년"]);
+  document.getElementById("studentName").textContent = studentName || "";
+  document.getElementById("schoolName").textContent = schoolName || "";
+  document.getElementById("grade").textContent = formatGrade(grade);
   document.getElementById("studyPeriod").textContent = `${calendarMonthSpan(first["리포트시점"], last["리포트시점"])}개월 차`;
   document.getElementById("currentSchools").textContent = last["현재 상황 지원 가능한 학교"] || "기본 다지는 중";
   document.getElementById("futureSchools").textContent = last["발전 후 지원 가능한 학교"] || "";

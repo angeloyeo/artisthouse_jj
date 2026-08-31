@@ -11,7 +11,7 @@
   --muted: #776a60;
   --line: #cdbdaf;
   --line-dark: #8e7867;
-  --paper: #fffdfb;
+  --paper: #fff;
   --panel: #f5efea;
   --shadow: 0 14px 36px rgba(60, 44, 31, 0.18);
 }
@@ -23,10 +23,10 @@
 body {
   margin: 0;
   color: var(--ink);
-  background:
-    linear-gradient(180deg, rgba(231, 218, 209, 0.65), rgba(247, 241, 237, 0.75)),
-    #eee8e2;
+  background: #fff;
   font-family: "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
 }
 
 .app-shell {
@@ -146,7 +146,7 @@ button:disabled {
   min-height: 793px;
   margin: 0 auto;
   padding: 26px 30px 28px;
-  background: var(--paper);
+  background: #fff;
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
 }
