@@ -11,11 +11,13 @@ const REQUIRED_COLUMNS = [
   "사고력",
   "완성도",
   "멘탈관리",
+  "현재 상황 지원 가능한 학교",
   "발전 후 지원 가능한 학교",
 ];
 
 const DRAWING_METRICS = ["형태력", "사고력", "멘탈관리", "완성도", "묘사력"];
 const LINE_COLORS = ["#3c2c1f", "#b77a45", "#447487", "#68745b", "#9b6b7b"];
+const TEMPLATE_DOWNLOAD_HINT = "사용 방법의 '템플릿 다운로드'에서 받을 수 있습니다.";
 
 const fileInput = document.getElementById("inputFile");
 const selectFileButton = document.getElementById("selectFileButton");
@@ -45,8 +47,10 @@ async function handleFileSelection(event) {
       .filter((row) => row["리포트시점"] instanceof Date && !Number.isNaN(row["리포트시점"].getTime()));
 
     if (normalizedRows.length === 0) {
-      throw new Error("읽을 수 있는 리포트 행이 없습니다.");
+      throw new Error("리포트시점 형식이 올바르지 않습니다. 날짜는 2026-03-01처럼 YYYY-MM-DD 형식 또는 엑셀 날짜 형식으로 입력하세요.");
     }
+
+    validateReportRows(normalizedRows);
 
     reportPage.hidden = false;
     renderReport(normalizedRows);
@@ -59,15 +63,17 @@ async function handleFileSelection(event) {
   } catch (error) {
     reportPage.hidden = true;
     printButton.disabled = true;
-    setStatus(`오류 발생: ${error.message}`);
+    setStatus(`오류 발생: ${error.message}`, "error");
+    window.alert(`오류 발생: ${error.message}`);
     console.error(error);
   } finally {
     event.target.value = "";
   }
 }
 
-function setStatus(message) {
+function setStatus(message, type = "info") {
   statusEl.textContent = message;
+  statusEl.classList.toggle("status--error", type === "error");
 }
 
 async function readWorkbook(file) {
@@ -80,17 +86,17 @@ async function readWorkbook(file) {
 
 function validateTemplate(rows) {
   if (!rows.length) {
-    throw new Error("엑셀 파일에 데이터가 없습니다.");
+    throw new Error(`엑셀 파일에 데이터가 없습니다. ${TEMPLATE_DOWNLOAD_HINT}`);
   }
 
   const columns = Object.keys(rows[0]);
   if (columns.includes("성적")) {
-    throw new Error("예중/예고 입시용 템플릿이 아닌 미대 입시용 템플릿을 불러들였습니다.");
+    throw new Error(`예중/예고 입시용 템플릿이 아닌 미대 입시용 템플릿을 불러들였습니다. ${TEMPLATE_DOWNLOAD_HINT}`);
   }
 
   const missing = REQUIRED_COLUMNS.filter((column) => !columns.includes(column));
   if (missing.length) {
-    throw new Error(`필수 컬럼이 없습니다: ${missing.join(", ")}`);
+    throw new Error(`입력 템플릿 형식이 아닙니다. 필수 컬럼이 없습니다: ${missing.join(", ")}. ${TEMPLATE_DOWNLOAD_HINT}`);
   }
 }
 
@@ -107,6 +113,20 @@ function normalizeRow(row) {
   });
 
   return normalized;
+}
+
+function validateReportRows(rows) {
+  const first = rows[0];
+  const last = rows.at(-1);
+  const missing = [];
+
+  if (!hasValue(valueWithFallback(last["이름"], first["이름"]))) missing.push("이름");
+  if (!hasValue(valueWithFallback(last["학교"], first["학교"]))) missing.push("학교");
+  if (!hasValue(valueWithFallback(last["학년"], first["학년"]))) missing.push("학년");
+
+  if (missing.length) {
+    throw new Error(`학생 기본 정보가 없습니다: ${missing.join(", ")}`);
+  }
 }
 
 function parseExcelDate(value) {
@@ -134,7 +154,10 @@ function excelSerialToDate(serial) {
 
 function toNumber(value) {
   if (typeof value === "number") return value;
-  const parsed = Number(String(value ?? "").replace(/,/g, "").trim());
+  const numericText = String(value ?? "")
+    .trim()
+    .match(/[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?/);
+  const parsed = numericText ? Number(numericText[0].replace(/,/g, "")) : Number.NaN;
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
